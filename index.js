@@ -27,10 +27,15 @@ function processFirstItem(stringList, callback) {
  * Study the code for counter1 and counter2. Answer the questions below.
  * 
  * 1. What is the difference between counter1 and counter2?
+ *    counter1 has a variable (count) that is only available inside the counterMaker function (it has a function scope). Count would not        be accessible outside of the counterMaker function in the counter1 code.
+ * 
+ *    counter2 has a global or block scope variable. The variable count would be accessible anywhere in the code, inside and outside the       function it was intended for.
  * 
  * 2. Which of the two uses a closure? How can you tell?
+ *    count1 uses a closure. There is a new variable declared outside the function that calls the function itself. This would be able to       store some data separately from counter1 code.
  * 
  * 3. In what scenario would the counter1 code be preferable? In what scenario would counter2 be better? 
+ *    counter1 code would be preferable if there were multiple things you wanted to keep track of that used the counterMaker function.         counter2 code would be better if you only wanted to keep track of one thing.
  *
 */
 
@@ -56,11 +61,10 @@ function counter2() {
 
 Write a function called `inning` that returns a random number of points that a team scored in an inning. This should be a whole number between 0 and 2. */
 
-function inning(/*Code Here*/){
-
-    /*Code Here*/
-
+function inning(){
+  return Math.floor(Math.random() * 3);
 }
+console.log(inning());
 
 /* Task 3: finalScore()
 
@@ -76,11 +80,22 @@ finalScore(inning, 9) might return:
 
 */ 
 
-function finalScore(/*code Here*/){
-
-  /*Code Here*/
-
+function finalScore(callback, number){
+  let finalScores = {
+    'home': 0,
+    'away': 0,
+  }
+  for(let i = 0 ; i <= number; i++){
+    finalScores.home += callback();
+    finalScores.away += callback();
+  }
+  return finalScores;
 }
+console.log(finalScore(inning, 3));
+
+
+
+
 
 /* Task 4: 
 
@@ -102,9 +117,32 @@ and returns the score at each pont in the game, like so:
 9th inning: awayTeam - homeTeam
 Final Score: awayTeam - homeTeam */
 
-
-function scoreboard(/* CODE HERE */) {
-  /* CODE HERE */
+function getInningScore(currentInning, away, home){
+  if(currentInning === 1){
+  return `${currentInning}st inning: Away: ${away} - Home: ${home}`  
+  } else if(currentInning === 2) {
+    return `${currentInning}nd inning: Away: ${away} - Home: ${home}`
+  } else if (currentInning === 3){
+    return `${currentInning}rd inning: Away: ${away} - Home: ${home}`
+  } else if(currentInning !== 9){
+    return `${currentInning}th inning: Away: ${away} - Home: ${home}`
+  } else if (currentInning === 9){
+    return `Final Score: Away: ${away} - Home: ${home}`;
+  }
+  
 }
 
 
+function scoreboard(getInningScore, inning, num){
+  let away = 0;
+  let home = 0;
+for(let i = 1; i <=num ; i ++){
+  away += inning();
+  home += inning();
+  console.log(getInningScore(i, away, home));
+
+
+}
+}
+
+console.log(scoreboard(getInningScore, inning, 6));
